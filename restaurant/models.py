@@ -23,8 +23,8 @@ class FoodItem(models.Model):
 
 
 class Orders(models.Model):
-    order_firstname=models.CharField(max_length=12,default="xyz")
-    order_lastname=models.CharField(max_length=12,default="karki")
+    # order_firstname=models.CharField(max_length=12,default="xyz")
+    # order_lastname=models.CharField(max_length=12,default="karki")
     order_username=models.CharField(max_length=20,default="")
     order_id=models.IntegerField(default=0)
     order_contact1=models.CharField(max_length=20,default="")
@@ -37,7 +37,7 @@ class Orders(models.Model):
     def __str__(self):
         # return (self.order_firstname)
         if self.order_track == "onprocess":
-            return (self.order_firstname)
+            return (self.order_track)
         else:
             return (self.order_track)
         
@@ -46,6 +46,7 @@ class Orders(models.Model):
 class Review(models.Model):
     username=models.TextField(max_length=20)
     review=models.TextField(max_length=300)
+    sentiment=models.TextField(max_length=20,default="")
 
     def __str__(self):
         return self.username

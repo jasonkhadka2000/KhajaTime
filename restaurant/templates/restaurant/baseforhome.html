@@ -15,16 +15,21 @@
   <link rel="stylesheet" href="{%static 'style.css'%}" />
 
   <!-- Link Swiper's CSS -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 
   <title>{{title}}</title>
 </head>
 
 <body>
+  <div>
   <section class="navbar bg-secondary fixed-top full-width" style="z-index: 1000;">
     <nav class="text-light flex justify-between wrapper-x items-center">
       <div class="title-xs">
+        <a href="#" class="mx-md text-light"> <i class="fa fa-home"></i></a>
         <a class="nav-items mr-lg text-light" href="{%url 'foryou'%}">KhajaTime.com</a>
       </div>
       <div class="nav-links">
@@ -50,17 +55,19 @@
     </nav>
     
   </section>
-  {% for message in messages  %}            
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            <strong></strong>{{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-      {% endfor %} 
+   </div>
 
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+    
   <div class="container">
     {% block content %}
+    
     {% endblock%}
   </div>
 
@@ -71,7 +78,7 @@
           <div class="title-xs mb-lg">KhajaTime</div>
           <div>
             <p>
-              Khajaghar is the fastest, easiest and most convenient way to
+              KhajaTime is the fastest, easiest and most convenient way to
               enjoy the best food of your favourite restaurants wherever you
               want to.
               <a href="{%url 'about'%}" class="text-primary">Click here!</a>
@@ -115,11 +122,15 @@
       </div>
       <div class="copyright text-center full-width">
         <p>
-          <i class="fa fa-copyright"></i> 2021 Copyright MeroKhajaghar.com
+          <i class="fa fa-copyright"></i> 2021 Copyright KhajaTime.com
         </p>
       </div>
     </footer>
   </section>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
 </body>
 
 </html>

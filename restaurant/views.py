@@ -8,6 +8,8 @@ from .forms import EditProfileForm
 import json
 from django.contrib.auth.forms import PasswordChangeForm
 from .models import FoodItem,Category,Orders,Review,SpecialItem
+from . import logistic as p
+
 
 cart_price=dict()
 cart_name=dict()
@@ -214,18 +216,29 @@ def checkout(request):
     # return HttpResponse("checking out mrjk")
     return render(request,"restaurant/orderform.html",{"productsquantity":cart_quantity,"productsname":cart_name,"productsprice":cart_price,"total":total,"title":"Checkout"})
 
+#using model
 
 def reviews(request):
     uname=request.user.username
-    print(uname)
+    postivecount=0
+    negativecount=0
+    allreviews=Review.objects.all()
+    total=len(allreviews)
+    for r in allreviews:
+        if r.sentiment=="postive":
+            postivecount=postivecount+1
+        if r.sentiment=="negative":
+            negativecount==negativecount+1
+            
     if request.method=="POST":
         username=request.user
         review=request.POST.get('review','default')
-        newreview=Review(username=username,review=review)
+        messages.success(request,"review added")
+        newreview=Review(username=username,review=review,sentiment=p.prediction(review))
         newreview.save()
         return redirect('reviews')
     allreviews=Review.objects.all()
-    return render(request, 'restaurant/reviews.html',{"reviews":allreviews,"uname":uname,"title":"Reviews"})
+    return render(request, 'restaurant/reviews.html',{"reviews":allreviews,"uname":uname,"title":"Reviews","postive":round((postivecount/total)*100,2),"negative":round((negativecount/total)*100,2)})
 
 def removereview(request,id=-1):
     Review.objects.filter(id=id).delete()
@@ -248,8 +261,8 @@ def confirmorder(request):
     print(finalorder)
     if request.method=="POST":
         result = json.dumps(finalorder)
-        order_firstname=request.user.first_name
-        order_lastname="khadka"
+        # order_firstname=request.user.first_name
+        # order_lastname="khadka"
         order_username=request.user.username
         order_id=request.user.id
         order_contact1=request.POST.get('contact1',"")
@@ -258,7 +271,7 @@ def confirmorder(request):
         order_location=request.POST.get('location',"")
         order_allorders=result
         if order_contact1!="" and order_location!="":
-            new_order=Orders(order_firstname=order_firstname,order_lastname=order_lastname,order_username=order_username,order_id=order_id,order_contact1=order_contact1,order_contact2=order_contact2,order_email=order_email,order_location=order_location,order_allorders=order_allorders)
+            new_order=Orders(order_username=order_username,order_id=order_id,order_contact1=order_contact1,order_contact2=order_contact2,order_email=order_email,order_location=order_location,order_allorders=order_allorders)
             new_order.save()
             cart_price={}
             cart_name={}
